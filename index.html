@@ -1380,23 +1380,26 @@
     <!-- Twitter Widget Script -->
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-    <script>
+    <script type="module">
+        import { promises, CATEGORY_LABELS, termEnd } from './src/data.js';
+        import { calculateStats, calculateCountdown, calculateCategoryProgress, filterPromises, renderPromiseCardHTML } from './src/logic.js';
+
         // Page Navigation
         function switchPage(pageId) {
             // Hide all pages
             document.querySelectorAll('.page-content').forEach(page => {
                 page.classList.remove('active');
             });
-            
+
             // Show selected page
             document.getElementById(pageId + 'Page').classList.add('active');
-            
+
             // Update nav links
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
             document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-            
+
             // Scroll to top
             window.scrollTo(0, 0);
         }
@@ -1407,153 +1410,22 @@
                 e.preventDefault();
                 const page = e.target.dataset.page;
                 switchPage(page);
-                
+
                 // Update URL hash
                 window.location.hash = page;
             });
         });
 
         // Handle initial page load from hash
-        window.addEventListener('DOMContentLoaded', () => {
-            const hash = window.location.hash.substring(1);
-            if (hash === 'about') {
-                switchPage('about');
-            }
-        });
-
-        // Campaign Promises Data
-        const promises = [
-            {
-                id: 1,
-                category: 'housing',
-                title: 'Rent Freeze',
-                description: 'Implement a citywide rent freeze to protect tenants from displacement and stabilize housing costs.',
-                status: 'pending',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 2,
-                category: 'housing',
-                title: 'Eviction Enforcement',
-                description: 'Strengthen eviction protections and create a tenant advocacy office to prevent illegal evictions.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 3,
-                category: 'housing',
-                title: 'Affordable Housing Stock',
-                description: 'Build and preserve 100,000 units of permanently affordable housing through public development.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 4,
-                category: 'transit',
-                title: 'Free Buses',
-                description: 'Make all NYC buses free to ride, starting with the busiest routes serving working-class neighborhoods.',
-                status: 'pending',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 5,
-                category: 'transit',
-                title: 'Transit Pilot Expansion',
-                description: 'Expand free transit pilot programs to demonstrate feasibility of fare-free public transportation.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 6,
-                category: 'childcare',
-                title: 'Universal Childcare',
-                description: 'Guarantee free, high-quality childcare for all NYC families regardless of income.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 7,
-                category: 'childcare',
-                title: 'Childcare Worker Wages',
-                description: 'Raise wages for childcare workers to reflect the value of their essential work.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 8,
-                category: 'food',
-                title: 'City Grocery Stores',
-                description: 'Establish publicly-owned grocery stores in underserved neighborhoods to provide affordable, healthy food.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 9,
-                category: 'food',
-                title: 'Eliminate Food Deserts',
-                description: 'End food deserts by ensuring every neighborhood has access to affordable fresh produce within walking distance.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 10,
-                category: 'wages',
-                title: '$30 Minimum Wage by 2030',
-                description: 'Raise the minimum wage to $30/hour by 2030 for all workers in New York City.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 11,
-                category: 'taxes',
-                title: 'Tax the Wealthy',
-                description: 'Implement progressive taxation on high earners and luxury properties to fund public services.',
-                status: 'pending',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 12,
-                category: 'taxes',
-                title: 'Corporate Tax Reform',
-                description: 'Close corporate tax loopholes and ensure large businesses pay their fair share.',
-                status: 'tbd',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 13,
-                category: 'governance',
-                title: 'Clean Break from Adams',
-                description: 'Reverse harmful Adams-era policies and restore accountability to city government.',
-                status: 'in-progress',
-                lastUpdate: 'February 9, 2026'
-            },
-            {
-                id: 14,
-                category: 'governance',
-                title: 'Transparent Budget',
-                description: 'Make the city budget fully transparent and accessible, with participatory budgeting expanded citywide.',
-                status: 'pending',
-                lastUpdate: 'February 9, 2026'
-            }
-        ];
-
-        const termStart = new Date('2026-01-01T00:00:00');
-        const termEnd = new Date('2030-01-01T00:00:00');
-
-        // Calculate stats
-        function calculateStats() {
-            const total = promises.length;
-            const delivered = promises.filter(p => p.status === 'delivered').length;
-            const inProgress = promises.filter(p => p.status === 'in-progress').length;
-            const percentage = total > 0 ? ((delivered / total) * 100).toFixed(0) : 0;
-            
-            return { total, delivered, inProgress, percentage };
+        const hash = window.location.hash.substring(1);
+        if (hash === 'about') {
+            switchPage('about');
         }
 
         // Update overall progress
         function updateOverallProgress() {
-            const stats = calculateStats();
-            
+            const stats = calculateStats(promises);
+
             document.getElementById('totalPromises').textContent = stats.total;
             document.getElementById('deliveredCount').textContent = stats.delivered;
             document.getElementById('inProgressCount').textContent = stats.inProgress;
@@ -1563,14 +1435,8 @@
 
         // Update hero countdown
         function updateHeroCountdown() {
-            const now = new Date();
-            const diff = termEnd - now;
-            
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
+            const { days, hours, minutes, seconds } = calculateCountdown();
+
             document.getElementById('heroDays').textContent = days;
             document.getElementById('heroHours').textContent = hours;
             document.getElementById('heroMinutes').textContent = minutes;
@@ -1579,25 +1445,10 @@
 
         // Generate category progress bars
         function generateCategoryProgress() {
-            const categories = {
-                'housing': 'Housing',
-                'transit': 'Transit',
-                'childcare': 'Childcare',
-                'food': 'Food',
-                'wages': 'Wages',
-                'taxes': 'Taxes',
-                'governance': 'Governance'
-            };
-            
             const container = document.getElementById('categoryProgressBars');
             container.innerHTML = '';
-            
-            Object.entries(categories).forEach(([key, name]) => {
-                const categoryPromises = promises.filter(p => p.category === key);
-                const delivered = categoryPromises.filter(p => p.status === 'delivered').length;
-                const total = categoryPromises.length;
-                const percentage = total > 0 ? ((delivered / total) * 100).toFixed(0) : 0;
-                
+
+            calculateCategoryProgress(promises).forEach(({ key, name, delivered, total, percentage }) => {
                 const item = document.createElement('div');
                 item.className = 'category-progress-item';
                 item.innerHTML = `
@@ -1615,33 +1466,19 @@
         function renderPromises(filteredPromises = promises) {
             const grid = document.getElementById('promisesGrid');
             grid.innerHTML = '';
-            
+
             if (filteredPromises.length === 0) {
                 grid.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">No promises match your filters.</p>';
                 return;
             }
-            
+
             filteredPromises.forEach((promise, index) => {
                 const card = document.createElement('div');
                 card.className = 'promise-card';
                 card.dataset.status = promise.status;
                 card.dataset.category = promise.category;
                 card.style.animationDelay = `${0.1 + (index * 0.05)}s`;
-                
-                card.innerHTML = `
-                    <div class="promise-header">
-                        <div>
-                            <div class="promise-category">${promise.category.toUpperCase()}</div>
-                            <div class="promise-title">${promise.title}</div>
-                        </div>
-                        <span class="status-badge status-${promise.status}">${promise.status.replace('-', ' ')}</span>
-                    </div>
-                    <div class="promise-description">${promise.description}</div>
-                    <div class="promise-meta">
-                        <span class="last-update">Last updated: ${promise.lastUpdate}</span>
-                    </div>
-                `;
-                
+                card.innerHTML = renderPromiseCardHTML(promise, index);
                 grid.appendChild(card);
             });
         }
@@ -1652,23 +1489,11 @@
         let currentSearchQuery = '';
 
         function applyFilters() {
-            let filtered = promises;
-            
-            if (currentCategoryFilter !== 'all') {
-                filtered = filtered.filter(p => p.category === currentCategoryFilter);
-            }
-            
-            if (currentStatusFilter !== 'all') {
-                filtered = filtered.filter(p => p.status === currentStatusFilter);
-            }
-            
-            if (currentSearchQuery) {
-                filtered = filtered.filter(p => 
-                    p.title.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
-                    p.description.toLowerCase().includes(currentSearchQuery.toLowerCase())
-                );
-            }
-            
+            const filtered = filterPromises(promises, {
+                categoryFilter: currentCategoryFilter,
+                statusFilter: currentStatusFilter,
+                searchQuery: currentSearchQuery,
+            });
             renderPromises(filtered);
         }
 
@@ -1694,7 +1519,7 @@
         updateHeroCountdown();
         generateCategoryProgress();
         renderPromises();
-        
+
         // Update countdown every second
         setInterval(updateHeroCountdown, 1000);
     </script>
