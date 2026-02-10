@@ -2,9 +2,8 @@
 
 **A working-class accountability tracker for Mayor Zohran Mamdani's campaign promises.**
 
-Holding power accountable. Tracking all 14 major policy commitments from NYC's historic 2025 mayoral victory.
+Tracking all 14 major policy commitments from NYC's historic 2025 mayoral victory.
 
-🔗 **[Live Site](https://yourusername.github.io/zohran-watch)** (update with your GitHub Pages URL)
 
 ---
 
@@ -147,7 +146,6 @@ This is free software built by and for the working class. Fork it, remix it, use
 
 - **Live Site:** [zohranwatch.org](https://yourusername.github.io/zohran-watch)
 - **Report Issues:** [GitHub Issues](https://github.com/yourusername/zohran-watch/issues)
-- **Submit Feedback:** feedback@zohranwatch.org
 
 ---
 
