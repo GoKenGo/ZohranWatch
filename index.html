@@ -134,13 +134,30 @@
             box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
         }
 
-        /* Page Content */
+        /* Page Content - Smooth transitions */
         .page-content {
             display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         .page-content.active {
             display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: pageFadeIn 0.4s ease-out;
+        }
+
+        @keyframes pageFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
@@ -1264,87 +1281,84 @@
     <!-- ABOUT PAGE -->
     <div id="aboutPage" class="page-content">
         <div class="container">
-            <!-- What is Zohran's Platform Section -->
-            <section class="about-section">
+            <!-- 1. What is Zohran Mamdani's Platform? -->
+            <section class="about-section" data-testid="about-platform">
                 <h2 class="about-title">What is Zohran Mamdani's Platform?</h2>
                 <div class="about-content">
-                    <p>Zohran Mamdani won the NYC mayoralty on a bold working-class platform that rejects decades of failed neoliberal governance. His campaign centered on universal programs that benefit everyone—not means-tested scraps—and a willingness to directly challenge the real estate developers, corporate landlords, and Wall Street interests that have dominated city politics for too long.</p>
-                    <p>This is what democracy looks like when working people, not billionaires, set the agenda.</p>
+                    <p>Zohran Mamdani ran a progressive campaign for NYC mayor focused on working-class New Yorkers. His platform emphasizes universal programs available to all residents rather than means-tested benefits, and proposes significant changes to how the city addresses housing, transit, wages, and governance.</p>
+                    <p>The campaign positioned itself as a challenge to corporate influence in city politics, proposing public alternatives to market-based solutions across multiple policy areas.</p>
                 </div>
             </section>
 
-            <!-- Key Components -->
-            <section class="about-section">
+            <!-- 2. Key Components -->
+            <section class="about-section" data-testid="about-pillars">
                 <h3 class="about-subtitle">Key Components</h3>
                 <div class="about-content">
-                    <p>Mamdani's platform is built on four core principles of working-class power:</p>
-                    <p><strong>Universal Social Programs:</strong> Free buses, universal childcare, and public grocery stores—services that strengthen our communities and prove government can work for regular people, not just the wealthy.</p>
-                    <p><strong>Housing as a Human Right:</strong> Rent freeze to stop displacement, eviction protections with teeth, and 100,000 units of permanently affordable housing built through public development—not luxury condos for foreign investors.</p>
-                    <p><strong>Economic Justice:</strong> A $30 minimum wage by 2030, progressive taxation that makes the rich pay their fair share, and corporate accountability to end the race to the bottom.</p>
-                    <p><strong>Democratic Governance:</strong> Transparent budgeting with participatory decision-making, and a clean break from the corruption and incompetence of the Adams era.</p>
+                    <p>The platform is built on four central pillars:</p>
+                    <p><strong>Universal Social Programs:</strong> Free bus service, universal childcare, and publicly-owned grocery stores designed to provide baseline services for all New Yorkers regardless of income level.</p>
+                    <p><strong>Housing Justice:</strong> A proposed rent freeze, strengthened eviction protections, and a commitment to build 100,000 units of permanently affordable housing through public development.</p>
+                    <p><strong>Economic Transformation:</strong> A $30 minimum wage target by 2030, progressive taxation proposals, and corporate accountability measures aimed at restructuring how wealth is distributed in the city.</p>
+                    <p><strong>Democratic Governance:</strong> Transparent budgeting processes, expanded participatory decision-making, and a stated commitment to break from the policies of the prior administration.</p>
                 </div>
             </section>
 
-            <!-- Policy Areas -->
-            <section class="about-section">
+            <!-- 3. Policy Areas -->
+            <section class="about-section" data-testid="about-policy-areas">
                 <h3 class="about-subtitle">Policy Areas</h3>
                 <div class="about-content">
-                    <p>We're tracking implementation across seven critical areas where working New Yorkers have been failed by austerity politics:</p>
-                    <p><strong>Housing:</strong> Rent freeze, eviction enforcement, 100,000 affordable units. Because housing is a human right, not a commodity for speculation.</p>
-                    <p><strong>Transit:</strong> Free buses starting with working-class neighborhoods, expanded pilots. Public transportation should be free at the point of use, like roads for cars.</p>
-                    <p><strong>Childcare:</strong> Universal childcare for all families, living wages for care workers. Families shouldn't have to choose between work and raising kids.</p>
-                    <p><strong>Food:</strong> Publicly-owned grocery stores, elimination of food deserts. No neighborhood should be abandoned by capitalism.</p>
-                    <p><strong>Wages:</strong> $30 minimum wage by 2030. If wages had kept pace with productivity, this would already be the floor.</p>
-                    <p><strong>Taxes:</strong> Progressive taxation, corporate tax reform. The wealthy have been freeloading for decades while our schools and hospitals crumble.</p>
-                    <p><strong>Governance:</strong> Transparent budget, participatory decision-making. Democracy means the people have power, not just a vote every four years.</p>
+                    <p>This tracker monitors implementation across seven policy categories:</p>
+                    <p><strong>Housing:</strong> Rent freeze, eviction enforcement reform, and 100,000 new affordable housing units through public development programs.</p>
+                    <p><strong>Transit:</strong> Free bus service beginning with high-ridership routes in underserved neighborhoods, with expanded pilot programs for fare-free transit.</p>
+                    <p><strong>Childcare:</strong> Universal childcare for all families and increased wages for childcare workers to reflect the demands of the profession.</p>
+                    <p><strong>Food:</strong> Publicly-owned grocery stores in underserved areas and initiatives to eliminate food deserts across the five boroughs.</p>
+                    <p><strong>Wages:</strong> Phased increase of the minimum wage to $30/hour by 2030 for all NYC workers.</p>
+                    <p><strong>Taxes:</strong> Progressive taxation on high earners and luxury properties, along with corporate tax reform to close existing loopholes.</p>
+                    <p><strong>Governance:</strong> Full budget transparency, citywide participatory budgeting, and reversal of specific prior-administration policies.</p>
                 </div>
             </section>
 
-            <!-- Different Perspectives -->
-            <section class="about-section perspectives-section">
-                <h3 class="about-subtitle">Why This Matters</h3>
-                
+            <!-- 4. Different Perspectives -->
+            <section class="about-section perspectives-section" data-testid="about-perspectives">
+                <h3 class="about-subtitle">Different Perspectives</h3>
+
                 <div class="perspectives-grid">
                     <div class="perspective-card support-card">
-                        <h4 class="perspective-title">Why We Support This Platform:</h4>
+                        <h4 class="perspective-title">Supporters Argue:</h4>
                         <ul class="perspective-list">
-                            <li>Centers working-class New Yorkers who've been abandoned by both parties</li>
-                            <li>Provides universal programs that build solidarity, not means-tested welfare that divides us</li>
-                            <li>Directly confronts real estate and corporate power instead of negotiating surrender</li>
-                            <li>Draws on proven international examples—social housing in Vienna, free transit in Luxembourg</li>
-                            <li>Represents an actual alternative to the "progressive austerity" that's failed us</li>
-                            <li>Fights for the multiracial working class, not identity politics without material change</li>
+                            <li>Centers working-class New Yorkers in policymaking</li>
+                            <li>Universal programs build broader public support than means-tested alternatives</li>
+                            <li>Challenges corporate power structures that influence city governance</li>
+                            <li>Draws on proven international solutions such as social housing and free transit</li>
+                            <li>Represents a clean break from neoliberal policy approaches</li>
                         </ul>
                     </div>
-                    
+
                     <div class="perspective-card critique-card">
-                        <h4 class="perspective-title">Who Opposes This (And Why):</h4>
+                        <h4 class="perspective-title">Critics Warn:</h4>
                         <ul class="perspective-list">
-                            <li>Real estate developers who profit from the housing crisis</li>
-                            <li>Corporate landlords extracting wealth from working families</li>
-                            <li>Wall Street firms that want to privatize public services</li>
-                            <li>Centrist politicians invested in "pragmatic" surrender to business interests</li>
-                            <li>Media outlets owned by billionaires threatened by progressive taxation</li>
-                            <li>State legislators beholden to the same donors who funded Adams</li>
+                            <li>Budget feasibility and implementation challenges for universal programs</li>
+                            <li>Potential resistance from state government and business interests</li>
+                            <li>Questions about long-term political sustainability of ambitious proposals</li>
+                            <li>Revenue concerns around proposed tax increases and their economic effects</li>
+                            <li>Possible regulatory conflicts with state and federal policy frameworks</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="tracker-mission">
-                    <p><strong>Our Mission:</strong> This tracker exists to hold Mayor Mamdani accountable to the working-class movement that elected him. We won't accept excuses, backroom deals, or the "politics of the possible" that always seems possible for Wall Street but impossible for working people.</p>
-                    <p><strong>Our Bias:</strong> We're explicitly on the side of tenants over landlords, workers over bosses, and the multiracial working class over the ruling class. We believe these policies are good and should be implemented. We're tracking them because accountability builds power.</p>
-                    <p><strong>Power to the People.</strong></p>
+                <div class="tracker-mission" data-testid="tracker-mission">
+                    <p><strong>Tracker Mission:</strong> This tracker aims to provide objective monitoring of the Mamdani administration's progress on stated campaign commitments, without advocating for or against specific policies.</p>
+                    <p>By documenting implementation status, timelines, and outcomes, we seek to give New Yorkers the information they need to evaluate their government's follow-through on the promises that shaped the election.</p>
                 </div>
             </section>
 
-            <!-- Twitter Feed from @NYCMayor -->
-            <section class="twitter-section">
+            <!-- 5. Twitter Feed from @NYCMayor -->
+            <section class="twitter-section" data-testid="about-twitter">
                 <h2>From The Mayor's Desk</h2>
                 <div class="twitter-subtitle">Live updates from @NYCMayor</div>
                 <div class="twitter-container">
-                    <a class="twitter-timeline" 
-                       data-height="600" 
-                       data-theme="light" 
+                    <a class="twitter-timeline"
+                       data-height="600"
+                       data-theme="light"
                        data-chrome="noheader nofooter noborders transparent"
                        href="https://twitter.com/NYCMayor?ref_src=twsrc%5Etfw">
                        Loading tweets from @NYCMayor...
@@ -1352,17 +1366,16 @@
                 </div>
             </section>
 
-            <!-- About This Tracker -->
-            <section class="about-section tracker-story">
+            <!-- 6. About This Tracker -->
+            <section class="about-section tracker-story" data-testid="about-tracker-story">
                 <h3 class="about-subtitle">About This Tracker</h3>
                 <div class="about-content">
-                    <p><strong>Zohran Watch</strong> was created by organizers and activists who believe electoral politics only matters if we hold elected officials accountable after the votes are counted.</p>
-                    <p>Inspired by the Project 2025 Observer and rooted in NYC's proud tradition of labor organizing and tenant activism, this tracker exists because we know power concedes nothing without a demand.</p>
-                    <p>We're not journalists pretending to be neutral. We're partisans for the working class. We built this tool because we believe in these policies, we fought for this victory, and we'll fight to make sure these promises become reality.</p>
-                    <p><strong>This is an independent project, not affiliated with any campaign or organization.</strong> We answer to the people, not politicians. If Mamdani sells out, we'll be the first to call it out.</p>
-                    <p><em>Solidarity forever. The people united will never be defeated.</em></p>
+                    <p><strong>Zohran Watch</strong> is a community accountability tool built to track the implementation of campaign promises made during the 2025 NYC mayoral race.</p>
+                    <p>Inspired by the Project 2025 Observer, this tracker was created by community members who believe that transparent, accessible monitoring of government commitments strengthens democratic accountability for all New Yorkers.</p>
+                    <p>We document what was promised, what has been delivered, and where progress has stalled — providing factual updates so residents can draw their own conclusions.</p>
+                    <p><strong>This is an independent project, not affiliated with any political campaign, party, or organization.</strong></p>
                 </div>
-                
+
                 <div class="about-actions">
                     <a href="mailto:feedback@zohranwatch.org" class="action-button">Submit Feedback</a>
                     <a href="https://github.com/yourusername/zohran-watch/issues" class="action-button">Report Issues</a>
@@ -1381,24 +1394,37 @@
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
     <script>
-        // Page Navigation
+        // Valid page IDs
+        const validPages = ['home', 'about'];
+
+        // Page Navigation with smooth transitions
         function switchPage(pageId) {
+            if (!validPages.includes(pageId)) {
+                pageId = 'home';
+            }
+
             // Hide all pages
             document.querySelectorAll('.page-content').forEach(page => {
                 page.classList.remove('active');
             });
-            
+
             // Show selected page
-            document.getElementById(pageId + 'Page').classList.add('active');
-            
-            // Update nav links
+            const targetPage = document.getElementById(pageId + 'Page');
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update nav links active state
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
-            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
+            const activeLink = document.querySelector(`[data-page="${pageId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+
+            // Smooth scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // Nav click handlers
@@ -1407,17 +1433,24 @@
                 e.preventDefault();
                 const page = e.target.dataset.page;
                 switchPage(page);
-                
+
                 // Update URL hash
                 window.location.hash = page;
             });
         });
 
+        // Handle browser back/forward with hashchange
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.substring(1);
+            const pageId = validPages.includes(hash) ? hash : 'home';
+            switchPage(pageId);
+        });
+
         // Handle initial page load from hash
         window.addEventListener('DOMContentLoaded', () => {
             const hash = window.location.hash.substring(1);
-            if (hash === 'about') {
-                switchPage('about');
+            if (validPages.includes(hash)) {
+                switchPage(hash);
             }
         });
 
