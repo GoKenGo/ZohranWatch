@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZOHRAN WATCH — Tracking the People's Mayor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red: #FF3B30;
+            --blue: #0051D5;
+            --cream: #FFF8DC;
+            --black: #1A1A1A;
+            --gray: #4A4A4A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        body {
+            font-family: 'Courier Prime', monospace;
+            background-color: var(--cream);
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px),
+                url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+            color: var(--black);
+            line-height: 1.5;
+            position: relative;
+        }
+
+        /* Paper texture overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, transparent 0%, rgba(0,0,0,0.03) 100%),
+                radial-gradient(circle at 80% 80%, transparent 0%, rgba(0,0,0,0.02) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Torn paper edge at top */
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,10 Q5,5 10,10 T20,10 T30,10 T40,10 T50,10 T60,10 T70,10 T80,10 T90,10 T100,10 L100,15 L0,15 Z' fill='%23FFF8DC'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-size: 100px 15px;
+        }
+
+        header {
+            background-color: var(--red);
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,.05) 10px, rgba(0,0,0,.05) 20px);
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            position: relative;
+            margin-bottom: 3rem;
+            box-shadow: 
+                inset 0 -4px 0 rgba(0,0,0,0.2),
+                0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        /* Navigation */
+        .main-nav {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .nav-link {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5rem;
+            color: var(--cream);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.5rem 1.5rem;
+            border: 3px solid transparent;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            border-color: var(--cream);
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        }
+
+        .nav-link.active {
+            background-color: var(--cream);
+            color: var(--red);
+            border-color: var(--cream);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3rem, 12vw, 8rem);
+            color: var(--cream);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            line-height: 0.9;
+            margin-bottom: 0.5rem;
+            text-shadow: 
+                3px 3px 0px rgba(0,0,0,0.3),
+                6px 6px 0px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out;
+            position: relative;
+        }
+
+        /* Ink registration shift effect */
+        h1::after {
+            content: 'ZOHRAN WATCH';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            color: var(--blue);
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: var(--cream);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0.95;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        /* Stamp-style decorative elements */
+        .stamp {
+            position: absolute;
+            transform: rotate(-12deg);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--red);
+            border: 3px solid var(--red);
+            padding: 0.5rem 1.5rem;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .stamp-1 {
+            top: 20px;
+            right: 50px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .stamp-2 {
+            bottom: 30px;
+            left: 40px;
+            transform: rotate(8deg);
+            animation: fadeInUp 1s ease-out 0.7s both;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            background-color: var(--cream);
+            background-image: 
+                radial-gradient(circle, rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            border: 6px solid var(--black);
+            padding: 3rem 2.5rem;
+            margin-bottom: 3rem;
+            box-shadow: 12px 12px 0 rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--red);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .hero-stat {
+            background-color: rgba(255, 59, 48, 0.05);
+            border: 4px solid var(--black);
+            padding: 2rem 1.5rem;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            color: var(--red);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2rem;
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .stat-countdown {
+            font-size: 0.95rem;
+            color: var(--black);
+            margin-top: 0.5rem;
+            font-weight: bold;
+        }
+
+        .stat-countdown span {
+            display: inline-block;
+            margin: 0 0.3rem;
+        }
+
+        /* Overall Progress Section */
+        .overall-progress-section {
+            background-color: var(--blue);
+            background-image: 
+                radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px),
+                radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px);
+            background-size: 8px 8px;
+            background-position: 0 0, 4px 4px;
+            border: 6px solid var(--black);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 12px 12px 0 rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--cream);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .progress-stats {
+            display: flex;
+            gap: 2rem;
+            color: var(--cream);
+            font-size: 1.1rem;
+        }
+
+        .progress-stat strong {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8rem;
+            margin-right: 0.3rem;
+        }
+
+        .overall-progress-bar {
+            background-color: rgba(0,0,0,0.2);
+            height: 60px;
+            border: 4px solid var(--black);
+            position: relative;
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .overall-progress-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                45deg,
+                var(--red),
+                var(--red) 15px,
+                #FF5549 15px,
+                #FF5549 30px
+            );
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1.5rem;
+        }
+
+        .overall-progress-percentage {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            color: var(--cream);
+            letter-spacing: 0.05em;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+        }
+
+        /* Filters - Dropdown Style */
+        .filters {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            margin-bottom: 2rem;
+            box-shadow: none;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-dropdown {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--cream);
+            border: 4px solid var(--black);
+            padding: 1rem 1.5rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--black);
+            cursor: pointer;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%231A1A1A' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 3rem;
+        }
+
+        .filter-dropdown:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
+        }
+
+        .filter-dropdown:focus {
+            outline: none;
+            border-color: var(--red);
+        }
+
+        /* Category Progress Bars */
+        .category-progress-section {
+            background-color: var(--cream);
+            border: 6px solid var(--black);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 12px 12px 0 rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .category-progress-section .section-title {
+            color: var(--black);
+            margin-bottom: 2rem;
+        }
+
+        .category-progress-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .category-progress-item {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .category-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--black);
+            min-width: 150px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .category-bar-container {
+            flex: 1;
+            background-color: rgba(0,0,0,0.1);
+            height: 40px;
+            border: 3px solid var(--black);
+            position: relative;
+        }
+
+        .category-bar-fill {
+            height: 100%;
+            background: var(--blue);
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset -2px 0 4px rgba(0,0,0,0.2);
+        }
+
+        .category-percentage {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--black);
+            min-width: 60px;
+            text-align: right;
+        }
+
+        /* Detailed Promises Section */
+        .detailed-promises-section {
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .detailed-promises-section .section-title {
+            color: var(--black);
+            margin-bottom: 0;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            background-color: var(--cream);
+            border: 4px solid var(--black);
+            padding: 1rem 1.5rem;
+            font-family: 'Courier Prime', monospace;
+            font-size: 1rem;
+            color: var(--black);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--red);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
+        }
+
+        .search-input::placeholder {
+            color: var(--gray);
+            opacity: 0.7;
+        }
+
+        /* Time Trackers Section - REMOVED (replaced by hero) */
+
+        /* Promises - wheat paste poster stack */
+        .promises-grid {
+            display: grid;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .promise-card {
+            background-color: #FFFEF0;
+            background-image: 
+                linear-gradient(90deg, transparent 98%, rgba(0,0,0,0.05) 98%),
+                linear-gradient(0deg, transparent 98%, rgba(0,0,0,0.05) 98%);
+            background-size: 20px 20px;
+            border: 5px solid var(--black);
+            padding: 2rem;
+            position: relative;
+            box-shadow: 
+                8px 8px 0 rgba(0,0,0,0.1),
+                inset 0 0 0 2px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .promise-card:nth-child(1) { animation-delay: 0.1s; }
+        .promise-card:nth-child(2) { animation-delay: 0.15s; }
+        .promise-card:nth-child(3) { animation-delay: 0.2s; }
+        .promise-card:nth-child(4) { animation-delay: 0.25s; }
+
+        .promise-card:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 
+                12px 12px 0 rgba(0,0,0,0.15),
+                inset 0 0 0 2px rgba(0,0,0,0.1);
+        }
+
+        /* Tape effect on corners */
+        .promise-card::before,
+        .promise-card::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 25px;
+            background-color: rgba(255, 253, 208, 0.7);
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .promise-card::before {
+            top: -5px;
+            left: 30px;
+            transform: rotate(-5deg);
+        }
+
+        .promise-card::after {
+            top: -5px;
+            right: 30px;
+            transform: rotate(5deg);
+        }
+
+        .promise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .promise-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--black);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            line-height: 1.1;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        /* Rubber stamp status badges */
+        .status-badge {
+            padding: 0.6rem 1.2rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border: 3px solid;
+            transform: rotate(-3deg);
+            font-family: 'Bebas Neue', sans-serif;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+
+        .status-delivered {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #1e7e34;
+            border-color: #1e7e34;
+        }
+
+        .status-in-progress {
+            background-color: rgba(0, 81, 213, 0.15);
+            color: var(--blue);
+            border-color: var(--blue);
+        }
+
+        .status-blocked {
+            background-color: rgba(255, 59, 48, 0.15);
+            color: var(--red);
+            border-color: var(--red);
+        }
+
+        .status-pending {
+            background-color: rgba(255, 204, 0, 0.2);
+            color: #CC9900;
+            border-color: #CC9900;
+        }
+
+        .status-compromised {
+            background-color: rgba(255, 149, 0, 0.2);
+            color: #CC7700;
+            border-color: #CC7700;
+        }
+
+        .status-tbd {
+            background-color: rgba(74, 74, 74, 0.1);
+            color: var(--gray);
+            border-color: var(--gray);
+        }
+
+        .promise-category {
+            display: inline-block;
+            background-color: var(--black);
+            color: var(--cream);
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-family: 'Bebas Neue', sans-serif;
+        }
+
+        .promise-description {
+            color: var(--black);
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        .promise-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed rgba(0,0,0,0.2);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .last-update {
+            color: var(--gray);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* News Feed - zine layout */
+        .news-section {
+            background-color: var(--cream);
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(0,0,0,0.03) 30px, rgba(0,0,0,0.03) 31px);
+            border: 6px solid var(--black);
+            padding: 3rem 2.5rem;
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 12px 12px 0 rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .news-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--red);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+            border-bottom: 4px solid var(--black);
+            padding-bottom: 1rem;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+        }
+
+        .news-item {
+            background-color: rgba(255, 254, 240, 0.8);
+            border-left: 6px solid var(--blue);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.05);
+        }
+
+        .news-date {
+            color: var(--gray);
+            font-size: 0.85rem;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: bold;
+        }
+
+        .news-title {
+            font-family: 'Bebas Neue', sans-serif;
+            color: var(--black);
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.03em;
+        }
+
+        .news-content {
+            color: var(--black);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Twitter Feed - Newspaper Clipping Bulletin Board */
+        .twitter-section {
+            background-color: #E8DCC4;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 25px, rgba(0,0,0,0.04) 25px, rgba(0,0,0,0.04) 26px);
+            border: 6px solid var(--black);
+            padding: 3rem 2.5rem;
+            margin-top: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            box-shadow: 12px 12px 0 rgba(0,0,0,0.1);
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+            transform: rotate(-0.5deg);
+        }
+
+        /* About Page Styles */
+        .about-section {
+            background-color: var(--cream);
+            border: 6px solid var(--black);
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+            animation: fadeInUp 0.6s ease-out both;
+        }
+
+        .about-section:nth-child(1) { animation-delay: 0.1s; }
+        .about-section:nth-child(2) { animation-delay: 0.2s; }
+        .about-section:nth-child(3) { animation-delay: 0.3s; }
+        .about-section:nth-child(4) { animation-delay: 0.4s; }
+        .about-section:nth-child(5) { animation-delay: 0.5s; }
+
+        .about-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--red);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+            text-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+            border-bottom: 4px solid var(--black);
+            padding-bottom: 1rem;
+        }
+
+        .about-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--blue);
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .about-content {
+            color: var(--black);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .about-content p {
+            margin-bottom: 1.2rem;
+        }
+
+        .about-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-content strong {
+            color: var(--red);
+            font-weight: bold;
+        }
+
+        /* Perspectives Section */
+        .perspectives-section {
+            background-color: #FFFEF0;
+        }
+
+        .perspectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .perspective-card {
+            border: 4px solid var(--black);
+            padding: 2rem;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+        }
+
+        .support-card {
+            background-color: rgba(0, 81, 213, 0.05);
+            border-color: var(--blue);
+        }
+
+        .critique-card {
+            background-color: rgba(255, 59, 48, 0.05);
+            border-color: var(--red);
+        }
+
+        .perspective-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--black);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            letter-spacing: 0.03em;
+        }
+
+        .perspective-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .perspective-list li {
+            color: var(--black);
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .perspective-list li::before {
+            content: '★';
+            position: absolute;
+            left: 0;
+            color: var(--red);
+            font-size: 1rem;
+        }
+
+        .support-card .perspective-list li::before {
+            color: var(--blue);
+        }
+
+        .tracker-mission {
+            background-color: rgba(0,0,0,0.03);
+            border-left: 6px solid var(--red);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .tracker-mission p {
+            margin-bottom: 1rem;
+        }
+
+        .tracker-mission p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Tracker Story */
+        .tracker-story {
+            background-color: #FFF8DC;
+            background-image: 
+                radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px);
+            background-size: 15px 15px;
+        }
+
+        .about-actions {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .action-button {
+            background-color: var(--red);
+            color: var(--cream);
+            border: 4px solid var(--black);
+            padding: 1rem 2rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.2);
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+
+        .action-button:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 rgba(0,0,0,0.3);
+        }
+
+        /* Twitter Feed - Newspaper Clipping Bulletin Board (on About page) */
+
+        .twitter-section h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--black);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+            text-shadow: 2px 2px 0px rgba(255, 59, 48, 0.3);
+        }
+
+        .twitter-subtitle {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            color: var(--blue);
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--black);
+        }
+
+        .twitter-container {
+            background-color: var(--cream);
+            border: 5px solid var(--black);
+            padding: 0;
+            position: relative;
+            box-shadow: 
+                8px 8px 0 rgba(0,0,0,0.15),
+                inset 0 0 0 3px #E8DCC4;
+            transform: rotate(0.5deg);
+        }
+
+        /* Pushpins on Twitter container */
+        .twitter-container::before,
+        .twitter-container::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle at 35% 35%, #FF6B6B, #C92A2A);
+            border-radius: 50%;
+            box-shadow: 
+                inset -3px -3px 6px rgba(0,0,0,0.4),
+                0 3px 6px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .twitter-container::before {
+            left: 40px;
+        }
+
+        .twitter-container::after {
+            right: 40px;
+        }
+
+        /* Style the embedded Twitter timeline */
+        .twitter-timeline {
+            border: none !important;
+        }
+
+        /* Clipping corner fold effect */
+        .twitter-section::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 40px 40px 0;
+            border-color: transparent #1a3a6e transparent transparent;
+            opacity: 0.1;
+        }
+
+        /* Footer - wheat paste bottom */
+        footer {
+            background-color: var(--black);
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.02) 10px, rgba(255,255,255,0.02) 20px);
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 3rem;
+            border-top: 6px solid var(--red);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='15' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,5 Q5,10 10,5 T20,5 T30,5 T40,5 T50,5 T60,5 T70,5 T80,5 T90,5 T100,5 L100,0 L0,0 Z' fill='%231A1A1A'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-size: 100px 15px;
+        }
+
+        footer p {
+            color: var(--cream);
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            line-height: 1.8;
+        }
+
+        footer p:first-of-type {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            header {
+                padding: 3rem 1rem 1.5rem;
+            }
+
+            .main-nav {
+                flex-direction: row;
+                gap: 1rem;
+                margin-top: 1.5rem;
+            }
+
+            .nav-link {
+                font-size: 1.2rem;
+                padding: 0.4rem 1rem;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-countdown {
+                font-size: 0.85rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .progress-stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .filter-row {
+                flex-direction: column;
+            }
+
+            .filter-dropdown {
+                width: 100%;
+            }
+
+            .category-progress-item {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .category-name {
+                min-width: auto;
+            }
+
+            .category-percentage {
+                text-align: left;
+            }
+
+            .promise-header {
+                flex-direction: column;
+            }
+
+            .promise-title {
+                margin-bottom: 1rem;
+            }
+
+            .stamp {
+                font-size: 0.9rem;
+                padding: 0.3rem 1rem;
+            }
+
+            .stamp-1 {
+                right: 20px;
+            }
+
+            .stamp-2 {
+                left: 20px;
+            }
+
+            .search-input {
+                width: 100%;
+            }
+
+            /* About page mobile */
+            .perspectives-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-actions {
+                flex-direction: column;
+            }
+
+            .action-button {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>ZOHRAN WATCH</h1>
+            <p class="subtitle">Tracking the People's Mayor</p>
+            
+            <!-- Navigation -->
+            <nav class="main-nav">
+                <a href="#home" class="nav-link active" data-page="home">Home</a>
+                <a href="#about" class="nav-link" data-page="about">About</a>
+            </nav>
+            
+            <div class="stamp stamp-1">THE PEOPLE'S TRACKER</div>
+            <div class="stamp stamp-2">EST. 2026</div>
+        </div>
+    </header>
+
+    <!-- HOME PAGE -->
+    <div id="homePage" class="page-content active">
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h2 class="hero-title">A People-Powered Tracker</h2>
+            <p class="hero-description">Holding Mayor Mamdani accountable to the campaign promises that elected him. Real-time tracking of policy implementation.</p>
+            
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="stat-number">14</div>
+                    <div class="stat-label">Total Promises</div>
+                    <div class="stat-description">Major campaign commitments</div>
+                </div>
+                
+                <div class="hero-stat">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Categories</div>
+                    <div class="stat-description">Policy areas tracked</div>
+                </div>
+                
+                <div class="hero-stat">
+                    <div class="stat-number" id="heroTimeRemaining">0</div>
+                    <div class="stat-label">Time Until End of Term</div>
+                    <div class="stat-countdown">
+                        <span id="heroDays">0</span> Days
+                        <span id="heroHours">0</span> Hours
+                        <span id="heroMinutes">0</span> Minutes
+                        <span id="heroSeconds">0</span> Seconds
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overall Progress -->
+        <section class="overall-progress-section">
+            <div class="section-header">
+                <h2 class="section-title">Overall Progress</h2>
+                <div class="progress-stats">
+                    <span class="progress-stat"><strong id="totalPromises">14</strong> Total</span>
+                    <span class="progress-stat"><strong id="deliveredCount">0</strong> Delivered</span>
+                    <span class="progress-stat"><strong id="inProgressCount">0</strong> In Progress</span>
+                </div>
+            </div>
+            
+            <div class="overall-progress-bar">
+                <div class="overall-progress-fill" id="overallProgress" style="width: 0%;">
+                    <span class="overall-progress-percentage" id="overallPercentage">0%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters">
+            <div class="filter-row">
+                <select class="filter-dropdown" id="categoryDropdown">
+                    <option value="all">Select category...</option>
+                    <option value="housing">Housing</option>
+                    <option value="transit">Transit</option>
+                    <option value="childcare">Childcare</option>
+                    <option value="food">Food</option>
+                    <option value="wages">Wages</option>
+                    <option value="taxes">Taxes</option>
+                    <option value="governance">Governance</option>
+                </select>
+                
+                <select class="filter-dropdown" id="statusDropdown">
+                    <option value="all">All Statuses</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="blocked">Blocked</option>
+                    <option value="pending">Pending</option>
+                    <option value="compromised">Compromised</option>
+                    <option value="tbd">TBD</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Progress by Category -->
+        <section class="category-progress-section">
+            <h2 class="section-title">Progress by Category</h2>
+            <div id="categoryProgressBars" class="category-progress-bars">
+                <!-- Will be populated dynamically -->
+            </div>
+        </section>
+
+        <!-- Detailed Promises -->
+        <section class="detailed-promises-section">
+            <div class="section-header">
+                <h2 class="section-title">Detailed Campaign Promises</h2>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search promises...">
+            </div>
+            
+            <div class="promises-grid" id="promisesGrid">
+                <!-- Promises will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <!-- News Feed -->
+        <section class="news-section">
+            <h2>Recent Updates</h2>
+            <div id="newsFeed">
+                <div class="news-item">
+                    <div class="news-date">February 9, 2026</div>
+                    <div class="news-title">Tracker Launched</div>
+                    <div class="news-content">Zohran Watch is now live, tracking all 14 major campaign promises from Mayor Mamdani's historic election victory. The people are watching.</div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- END HOME PAGE -->
+
+    <!-- ABOUT PAGE -->
+    <div id="aboutPage" class="page-content">
+        <div class="container">
+            <!-- What is Zohran's Platform Section -->
+            <section class="about-section">
+                <h2 class="about-title">What is Zohran Mamdani's Platform?</h2>
+                <div class="about-content">
+                    <p>Zohran Mamdani won the NYC mayoralty on a bold working-class platform that rejects decades of failed neoliberal governance. His campaign centered on universal programs that benefit everyone—not means-tested scraps—and a willingness to directly challenge the real estate developers, corporate landlords, and Wall Street interests that have dominated city politics for too long.</p>
+                    <p>This is what democracy looks like when working people, not billionaires, set the agenda.</p>
+                </div>
+            </section>
+
+            <!-- Key Components -->
+            <section class="about-section">
+                <h3 class="about-subtitle">Key Components</h3>
+                <div class="about-content">
+                    <p>Mamdani's platform is built on four core principles of working-class power:</p>
+                    <p><strong>Universal Social Programs:</strong> Free buses, universal childcare, and public grocery stores—services that strengthen our communities and prove government can work for regular people, not just the wealthy.</p>
+                    <p><strong>Housing as a Human Right:</strong> Rent freeze to stop displacement, eviction protections with teeth, and 100,000 units of permanently affordable housing built through public development—not luxury condos for foreign investors.</p>
+                    <p><strong>Economic Justice:</strong> A $30 minimum wage by 2030, progressive taxation that makes the rich pay their fair share, and corporate accountability to end the race to the bottom.</p>
+                    <p><strong>Democratic Governance:</strong> Transparent budgeting with participatory decision-making, and a clean break from the corruption and incompetence of the Adams era.</p>
+                </div>
+            </section>
+
+            <!-- Policy Areas -->
+            <section class="about-section">
+                <h3 class="about-subtitle">Policy Areas</h3>
+                <div class="about-content">
+                    <p>We're tracking implementation across seven critical areas where working New Yorkers have been failed by austerity politics:</p>
+                    <p><strong>Housing:</strong> Rent freeze, eviction enforcement, 100,000 affordable units. Because housing is a human right, not a commodity for speculation.</p>
+                    <p><strong>Transit:</strong> Free buses starting with working-class neighborhoods, expanded pilots. Public transportation should be free at the point of use, like roads for cars.</p>
+                    <p><strong>Childcare:</strong> Universal childcare for all families, living wages for care workers. Families shouldn't have to choose between work and raising kids.</p>
+                    <p><strong>Food:</strong> Publicly-owned grocery stores, elimination of food deserts. No neighborhood should be abandoned by capitalism.</p>
+                    <p><strong>Wages:</strong> $30 minimum wage by 2030. If wages had kept pace with productivity, this would already be the floor.</p>
+                    <p><strong>Taxes:</strong> Progressive taxation, corporate tax reform. The wealthy have been freeloading for decades while our schools and hospitals crumble.</p>
+                    <p><strong>Governance:</strong> Transparent budget, participatory decision-making. Democracy means the people have power, not just a vote every four years.</p>
+                </div>
+            </section>
+
+            <!-- Different Perspectives -->
+            <section class="about-section perspectives-section">
+                <h3 class="about-subtitle">Why This Matters</h3>
+                
+                <div class="perspectives-grid">
+                    <div class="perspective-card support-card">
+                        <h4 class="perspective-title">Why We Support This Platform:</h4>
+                        <ul class="perspective-list">
+                            <li>Centers working-class New Yorkers who've been abandoned by both parties</li>
+                            <li>Provides universal programs that build solidarity, not means-tested welfare that divides us</li>
+                            <li>Directly confronts real estate and corporate power instead of negotiating surrender</li>
+                            <li>Draws on proven international examples—social housing in Vienna, free transit in Luxembourg</li>
+                            <li>Represents an actual alternative to the "progressive austerity" that's failed us</li>
+                            <li>Fights for the multiracial working class, not identity politics without material change</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="perspective-card critique-card">
+                        <h4 class="perspective-title">Who Opposes This (And Why):</h4>
+                        <ul class="perspective-list">
+                            <li>Real estate developers who profit from the housing crisis</li>
+                            <li>Corporate landlords extracting wealth from working families</li>
+                            <li>Wall Street firms that want to privatize public services</li>
+                            <li>Centrist politicians invested in "pragmatic" surrender to business interests</li>
+                            <li>Media outlets owned by billionaires threatened by progressive taxation</li>
+                            <li>State legislators beholden to the same donors who funded Adams</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tracker-mission">
+                    <p><strong>Our Mission:</strong> This tracker exists to hold Mayor Mamdani accountable to the working-class movement that elected him. We won't accept excuses, backroom deals, or the "politics of the possible" that always seems possible for Wall Street but impossible for working people.</p>
+                    <p><strong>Our Bias:</strong> We're explicitly on the side of tenants over landlords, workers over bosses, and the multiracial working class over the ruling class. We believe these policies are good and should be implemented. We're tracking them because accountability builds power.</p>
+                    <p><strong>Power to the People.</strong></p>
+                </div>
+            </section>
+
+            <!-- Twitter Feed from @NYCMayor -->
+            <section class="twitter-section">
+                <h2>From The Mayor's Desk</h2>
+                <div class="twitter-subtitle">Live updates from @NYCMayor</div>
+                <div class="twitter-container">
+                    <a class="twitter-timeline" 
+                       data-height="600" 
+                       data-theme="light" 
+                       data-chrome="noheader nofooter noborders transparent"
+                       href="https://twitter.com/NYCMayor?ref_src=twsrc%5Etfw">
+                       Loading tweets from @NYCMayor...
+                    </a>
+                </div>
+            </section>
+
+            <!-- About This Tracker -->
+            <section class="about-section tracker-story">
+                <h3 class="about-subtitle">About This Tracker</h3>
+                <div class="about-content">
+                    <p><strong>Zohran Watch</strong> was created by organizers and activists who believe electoral politics only matters if we hold elected officials accountable after the votes are counted.</p>
+                    <p>Inspired by the Project 2025 Observer and rooted in NYC's proud tradition of labor organizing and tenant activism, this tracker exists because we know power concedes nothing without a demand.</p>
+                    <p>We're not journalists pretending to be neutral. We're partisans for the working class. We built this tool because we believe in these policies, we fought for this victory, and we'll fight to make sure these promises become reality.</p>
+                    <p><strong>This is an independent project, not affiliated with any campaign or organization.</strong> We answer to the people, not politicians. If Mamdani sells out, we'll be the first to call it out.</p>
+                    <p><em>Solidarity forever. The people united will never be defeated.</em></p>
+                </div>
+                
+                <div class="about-actions">
+                    <a href="mailto:feedback@zohranwatch.org" class="action-button">Submit Feedback</a>
+                    <a href="https://github.com/yourusername/zohran-watch/issues" class="action-button">Report Issues</a>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- END ABOUT PAGE -->
+
+    <footer>
+        <p>Zohran Watch — An Independent Tracker</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Not affiliated with any political campaign or organization. Built by and for the people.</p>
+    </footer>
+
+    <!-- Twitter Widget Script -->
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    <script>
+        // Page Navigation
+        function switchPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId + 'Page').classList.add('active');
+            
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Nav click handlers
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const page = e.target.dataset.page;
+                switchPage(page);
+                
+                // Update URL hash
+                window.location.hash = page;
+            });
+        });
+
+        // Handle initial page load from hash
+        window.addEventListener('DOMContentLoaded', () => {
+            const hash = window.location.hash.substring(1);
+            if (hash === 'about') {
+                switchPage('about');
+            }
+        });
+
+        // Campaign Promises Data
+        const promises = [
+            {
+                id: 1,
+                category: 'housing',
+                title: 'Rent Freeze',
+                description: 'Implement a citywide rent freeze to protect tenants from displacement and stabilize housing costs.',
+                status: 'pending',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 2,
+                category: 'housing',
+                title: 'Eviction Enforcement',
+                description: 'Strengthen eviction protections and create a tenant advocacy office to prevent illegal evictions.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 3,
+                category: 'housing',
+                title: 'Affordable Housing Stock',
+                description: 'Build and preserve 100,000 units of permanently affordable housing through public development.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 4,
+                category: 'transit',
+                title: 'Free Buses',
+                description: 'Make all NYC buses free to ride, starting with the busiest routes serving working-class neighborhoods.',
+                status: 'pending',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 5,
+                category: 'transit',
+                title: 'Transit Pilot Expansion',
+                description: 'Expand free transit pilot programs to demonstrate feasibility of fare-free public transportation.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 6,
+                category: 'childcare',
+                title: 'Universal Childcare',
+                description: 'Guarantee free, high-quality childcare for all NYC families regardless of income.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 7,
+                category: 'childcare',
+                title: 'Childcare Worker Wages',
+                description: 'Raise wages for childcare workers to reflect the value of their essential work.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 8,
+                category: 'food',
+                title: 'City Grocery Stores',
+                description: 'Establish publicly-owned grocery stores in underserved neighborhoods to provide affordable, healthy food.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 9,
+                category: 'food',
+                title: 'Eliminate Food Deserts',
+                description: 'End food deserts by ensuring every neighborhood has access to affordable fresh produce within walking distance.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 10,
+                category: 'wages',
+                title: '$30 Minimum Wage by 2030',
+                description: 'Raise the minimum wage to $30/hour by 2030 for all workers in New York City.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 11,
+                category: 'taxes',
+                title: 'Tax the Wealthy',
+                description: 'Implement progressive taxation on high earners and luxury properties to fund public services.',
+                status: 'pending',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 12,
+                category: 'taxes',
+                title: 'Corporate Tax Reform',
+                description: 'Close corporate tax loopholes and ensure large businesses pay their fair share.',
+                status: 'tbd',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 13,
+                category: 'governance',
+                title: 'Clean Break from Adams',
+                description: 'Reverse harmful Adams-era policies and restore accountability to city government.',
+                status: 'in-progress',
+                lastUpdate: 'February 9, 2026'
+            },
+            {
+                id: 14,
+                category: 'governance',
+                title: 'Transparent Budget',
+                description: 'Make the city budget fully transparent and accessible, with participatory budgeting expanded citywide.',
+                status: 'pending',
+                lastUpdate: 'February 9, 2026'
+            }
+        ];
+
+        const termStart = new Date('2026-01-01T00:00:00');
+        const termEnd = new Date('2030-01-01T00:00:00');
+
+        // Calculate stats
+        function calculateStats() {
+            const total = promises.length;
+            const delivered = promises.filter(p => p.status === 'delivered').length;
+            const inProgress = promises.filter(p => p.status === 'in-progress').length;
+            const percentage = total > 0 ? ((delivered / total) * 100).toFixed(0) : 0;
+            
+            return { total, delivered, inProgress, percentage };
+        }
+
+        // Update overall progress
+        function updateOverallProgress() {
+            const stats = calculateStats();
+            
+            document.getElementById('totalPromises').textContent = stats.total;
+            document.getElementById('deliveredCount').textContent = stats.delivered;
+            document.getElementById('inProgressCount').textContent = stats.inProgress;
+            document.getElementById('overallProgress').style.width = `${stats.percentage}%`;
+            document.getElementById('overallPercentage').textContent = `${stats.percentage}%`;
+        }
+
+        // Update hero countdown
+        function updateHeroCountdown() {
+            const now = new Date();
+            const diff = termEnd - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            document.getElementById('heroDays').textContent = days;
+            document.getElementById('heroHours').textContent = hours;
+            document.getElementById('heroMinutes').textContent = minutes;
+            document.getElementById('heroSeconds').textContent = seconds;
+        }
+
+        // Generate category progress bars
+        function generateCategoryProgress() {
+            const categories = {
+                'housing': 'Housing',
+                'transit': 'Transit',
+                'childcare': 'Childcare',
+                'food': 'Food',
+                'wages': 'Wages',
+                'taxes': 'Taxes',
+                'governance': 'Governance'
+            };
+            
+            const container = document.getElementById('categoryProgressBars');
+            container.innerHTML = '';
+            
+            Object.entries(categories).forEach(([key, name]) => {
+                const categoryPromises = promises.filter(p => p.category === key);
+                const delivered = categoryPromises.filter(p => p.status === 'delivered').length;
+                const total = categoryPromises.length;
+                const percentage = total > 0 ? ((delivered / total) * 100).toFixed(0) : 0;
+                
+                const item = document.createElement('div');
+                item.className = 'category-progress-item';
+                item.innerHTML = `
+                    <div class="category-name">${name}</div>
+                    <div class="category-bar-container">
+                        <div class="category-bar-fill" style="width: ${percentage}%"></div>
+                    </div>
+                    <div class="category-percentage">${percentage}%</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Render promises
+        function renderPromises(filteredPromises = promises) {
+            const grid = document.getElementById('promisesGrid');
+            grid.innerHTML = '';
+            
+            if (filteredPromises.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; color: var(--gray); padding: 2rem;">No promises match your filters.</p>';
+                return;
+            }
+            
+            filteredPromises.forEach((promise, index) => {
+                const card = document.createElement('div');
+                card.className = 'promise-card';
+                card.dataset.status = promise.status;
+                card.dataset.category = promise.category;
+                card.style.animationDelay = `${0.1 + (index * 0.05)}s`;
+                
+                card.innerHTML = `
+                    <div class="promise-header">
+                        <div>
+                            <div class="promise-category">${promise.category.toUpperCase()}</div>
+                            <div class="promise-title">${promise.title}</div>
+                        </div>
+                        <span class="status-badge status-${promise.status}">${promise.status.replace('-', ' ')}</span>
+                    </div>
+                    <div class="promise-description">${promise.description}</div>
+                    <div class="promise-meta">
+                        <span class="last-update">Last updated: ${promise.lastUpdate}</span>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Filter functionality
+        let currentCategoryFilter = 'all';
+        let currentStatusFilter = 'all';
+        let currentSearchQuery = '';
+
+        function applyFilters() {
+            let filtered = promises;
+            
+            if (currentCategoryFilter !== 'all') {
+                filtered = filtered.filter(p => p.category === currentCategoryFilter);
+            }
+            
+            if (currentStatusFilter !== 'all') {
+                filtered = filtered.filter(p => p.status === currentStatusFilter);
+            }
+            
+            if (currentSearchQuery) {
+                filtered = filtered.filter(p => 
+                    p.title.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+                    p.description.toLowerCase().includes(currentSearchQuery.toLowerCase())
+                );
+            }
+            
+            renderPromises(filtered);
+        }
+
+        // Dropdown filters
+        document.getElementById('categoryDropdown').addEventListener('change', (e) => {
+            currentCategoryFilter = e.target.value;
+            applyFilters();
+        });
+
+        document.getElementById('statusDropdown').addEventListener('change', (e) => {
+            currentStatusFilter = e.target.value;
+            applyFilters();
+        });
+
+        // Search input
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+            applyFilters();
+        });
+
+        // Initialize
+        updateOverallProgress();
+        updateHeroCountdown();
+        generateCategoryProgress();
+        renderPromises();
+        
+        // Update countdown every second
+        setInterval(updateHeroCountdown, 1000);
+    </script>
+</body>
+</html>
