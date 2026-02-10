@@ -20,7 +20,6 @@ We're not neutral. We're partisans for the working class. We built this because 
 - **Real-time progress** with transparent status updates
 - **Category-level tracking** for Housing, Transit, Childcare, Food, Wages, Taxes, and Governance
 - **Live updates** from @NYCMayor
-- **Unapologetic leftist analysis** of implementation and resistance
 
 ---
 
@@ -51,27 +50,6 @@ We're not neutral. We're partisans for the working class. We built this because 
 - **TBD** ❓ — Status unclear or under evaluation
 
 ---
-
-## 🎨 Design Philosophy
-
-**NYC Labor Movement Poster + Risograph Zine Aesthetic**
-
-The design draws inspiration from:
-- 1970s labor movement protest posters
-- Wheat-pasted community bulletin boards  
-- Risograph-printed political pamphlets
-- Punk zine culture and DIY activism
-- NYC tenant organizing and union aesthetics
-
-**Key Visual Elements:**
-- **Typography:** Bebas Neue (protest signs) + Courier Prime (typewriter/zines)
-- **Color Palette:** Red (solidarity), Blue (working class), Cream (paper stock), Black (ink)
-- **Textures:** Paper grain, torn edges, halftone patterns, noise overlays
-- **Effects:** Rubber stamp badges, hand-rotated elements, ink registration shifts, pushpins, masking tape
-- **Animation:** Staggered fade-ins, hover states, live countdown timers
-
----
-
 ## 🚀 Quick Start
 
 ### Option 1: GitHub Pages (Easiest)
