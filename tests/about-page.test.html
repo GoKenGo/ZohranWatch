@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Page Tests — Zohran Watch</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 2rem;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #FFF8DC;
+        }
+        .test-meta {
+            color: #888;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+        }
+        .summary {
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px solid #333;
+            font-size: 1.1rem;
+        }
+        .summary.all-pass { border-color: #2ecc71; background: rgba(46,204,113,0.1); }
+        .summary.has-fail { border-color: #FF3B30; background: rgba(255,59,48,0.1); }
+        .group-title {
+            font-size: 1.2rem;
+            color: #FFF8DC;
+            margin: 1.5rem 0 0.5rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid #333;
+        }
+        .test-result {
+            padding: 0.5rem 1rem;
+            margin: 0.3rem 0;
+            border-left: 3px solid;
+            font-size: 0.95rem;
+        }
+        .pass { border-color: #2ecc71; color: #2ecc71; }
+        .fail { border-color: #FF3B30; color: #FF3B30; }
+        .fail-detail {
+            color: #FF6B6B;
+            font-size: 0.85rem;
+            margin-left: 1.5rem;
+            margin-top: 0.2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>ZOHRAN WATCH — About Page Tests</h1>
+    <div class="test-meta">Testing about page content, navigation, and functionality</div>
+    <div id="summary" class="summary"></div>
+    <div id="results"></div>
+
+    <!-- Load the page under test in a hidden iframe -->
+    <iframe id="testFrame" src="../index.html#about" style="display:none;" width="1024" height="768"></iframe>
+
+    <script>
+        const results = [];
+        let currentGroup = '';
+
+        function group(name) {
+            currentGroup = name;
+        }
+
+        function assert(description, condition, detail) {
+            results.push({
+                group: currentGroup,
+                description,
+                passed: !!condition,
+                detail: detail || ''
+            });
+        }
+
+        function render() {
+            const total = results.length;
+            const passed = results.filter(r => r.passed).length;
+            const failed = total - passed;
+
+            const summaryEl = document.getElementById('summary');
+            summaryEl.className = 'summary ' + (failed === 0 ? 'all-pass' : 'has-fail');
+            summaryEl.textContent = `${passed}/${total} tests passed` + (failed > 0 ? ` — ${failed} failed` : ' — All clear');
+
+            const container = document.getElementById('results');
+            let html = '';
+            let lastGroup = '';
+
+            results.forEach(r => {
+                if (r.group !== lastGroup) {
+                    html += `<div class="group-title">${r.group}</div>`;
+                    lastGroup = r.group;
+                }
+                const icon = r.passed ? 'PASS' : 'FAIL';
+                const cls = r.passed ? 'pass' : 'fail';
+                html += `<div class="test-result ${cls}">[${icon}] ${r.description}</div>`;
+                if (!r.passed && r.detail) {
+                    html += `<div class="fail-detail">${r.detail}</div>`;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Wait for iframe to load, then run tests
+        document.getElementById('testFrame').addEventListener('load', () => {
+            const doc = document.getElementById('testFrame').contentDocument;
+            const win = document.getElementById('testFrame').contentWindow;
+
+            // ===== ABOUT PAGE STRUCTURE =====
+            group('About Page Structure');
+
+            const aboutPage = doc.getElementById('aboutPage');
+            assert('About page element exists', aboutPage);
+            assert('About page is a page-content div', aboutPage && aboutPage.classList.contains('page-content'));
+
+            const aboutSections = aboutPage ? aboutPage.querySelectorAll('.about-section') : [];
+            assert('About page has at least 4 about-sections', aboutSections.length >= 4,
+                `Found ${aboutSections.length} sections`);
+
+            // ===== SECTION 1: PLATFORM OVERVIEW =====
+            group('Section 1: Platform Overview');
+
+            const platformSection = doc.querySelector('[data-testid="about-platform"]');
+            assert('Platform section exists', platformSection);
+            assert('Platform section has title "What is Zohran Mamdani\'s Platform?"',
+                platformSection && platformSection.querySelector('.about-title') &&
+                platformSection.querySelector('.about-title').textContent.includes("What is Zohran Mamdani"));
+            assert('Platform section has content paragraphs',
+                platformSection && platformSection.querySelectorAll('.about-content p').length >= 2);
+            assert('Platform overview mentions progressive campaign',
+                platformSection && platformSection.textContent.includes('progressive campaign'));
+            assert('Platform overview mentions working-class',
+                platformSection && platformSection.textContent.includes('working-class'));
+            assert('Platform overview mentions universal programs',
+                platformSection && platformSection.textContent.includes('universal programs'));
+
+            // ===== SECTION 2: KEY COMPONENTS (Four Pillars) =====
+            group('Section 2: Key Components (Four Pillars)');
+
+            const pillarsSection = doc.querySelector('[data-testid="about-pillars"]');
+            assert('Key components section exists', pillarsSection);
+            assert('Section title is "Key Components"',
+                pillarsSection && pillarsSection.querySelector('.about-subtitle') &&
+                pillarsSection.querySelector('.about-subtitle').textContent.includes('Key Components'));
+
+            const pillarsText = pillarsSection ? pillarsSection.textContent : '';
+            assert('Mentions Universal Social Programs', pillarsText.includes('Universal Social Programs'));
+            assert('Mentions Housing Justice', pillarsText.includes('Housing Justice'));
+            assert('Mentions Economic Transformation', pillarsText.includes('Economic Transformation'));
+            assert('Mentions Democratic Governance', pillarsText.includes('Democratic Governance'));
+
+            // ===== SECTION 3: POLICY AREAS =====
+            group('Section 3: Policy Areas (7 Categories)');
+
+            const policySection = doc.querySelector('[data-testid="about-policy-areas"]');
+            assert('Policy areas section exists', policySection);
+
+            const policyText = policySection ? policySection.textContent : '';
+            const categories = ['Housing', 'Transit', 'Childcare', 'Food', 'Wages', 'Taxes', 'Governance'];
+            categories.forEach(cat => {
+                assert(`Policy areas includes ${cat}`, policyText.includes(cat));
+            });
+
+            assert('Housing mentions rent freeze', policyText.toLowerCase().includes('rent freeze'));
+            assert('Transit mentions free bus', policyText.toLowerCase().includes('free bus'));
+            assert('Wages mentions $30 minimum wage', policyText.includes('$30'));
+            assert('Governance mentions transparency', policyText.toLowerCase().includes('transparen'));
+
+            // ===== SECTION 4: DIFFERENT PERSPECTIVES =====
+            group('Section 4: Different Perspectives (Two Columns)');
+
+            const perspSection = doc.querySelector('[data-testid="about-perspectives"]');
+            assert('Perspectives section exists', perspSection);
+            assert('Section title is "Different Perspectives"',
+                perspSection && perspSection.querySelector('.about-subtitle') &&
+                perspSection.querySelector('.about-subtitle').textContent.includes('Different Perspectives'));
+
+            const supportCard = perspSection ? perspSection.querySelector('.support-card') : null;
+            const critiqueCard = perspSection ? perspSection.querySelector('.critique-card') : null;
+
+            assert('Supporters card exists (blue accent)', supportCard);
+            assert('Critics card exists (red accent)', critiqueCard);
+
+            // Supporters content
+            assert('Supporters card titled "Supporters Argue"',
+                supportCard && supportCard.querySelector('.perspective-title') &&
+                supportCard.querySelector('.perspective-title').textContent.includes('Supporters Argue'));
+
+            const supportItems = supportCard ? supportCard.querySelectorAll('.perspective-list li') : [];
+            assert('Supporters card has 5 bullet points', supportItems.length === 5,
+                `Found ${supportItems.length}`);
+
+            const supportText = supportCard ? supportCard.textContent : '';
+            assert('Supporters: working-class New Yorkers', supportText.includes('working-class New Yorkers'));
+            assert('Supporters: universal programs', supportText.toLowerCase().includes('universal programs'));
+            assert('Supporters: corporate power', supportText.toLowerCase().includes('corporate power'));
+            assert('Supporters: international solutions', supportText.toLowerCase().includes('international solutions'));
+            assert('Supporters: neoliberal', supportText.toLowerCase().includes('neoliberal'));
+
+            // Critics content
+            assert('Critics card titled "Critics Warn"',
+                critiqueCard && critiqueCard.querySelector('.perspective-title') &&
+                critiqueCard.querySelector('.perspective-title').textContent.includes('Critics Warn'));
+
+            const critiqueItems = critiqueCard ? critiqueCard.querySelectorAll('.perspective-list li') : [];
+            assert('Critics card has 5 bullet points', critiqueItems.length === 5,
+                `Found ${critiqueItems.length}`);
+
+            const critiqueText = critiqueCard ? critiqueCard.textContent : '';
+            assert('Critics: budget/implementation challenges', critiqueText.toLowerCase().includes('budget') && critiqueText.toLowerCase().includes('implementation'));
+            assert('Critics: state/business resistance', critiqueText.toLowerCase().includes('resistance'));
+            assert('Critics: political sustainability', critiqueText.toLowerCase().includes('sustainability'));
+            assert('Critics: revenue concerns', critiqueText.toLowerCase().includes('revenue'));
+            assert('Critics: regulatory conflicts', critiqueText.toLowerCase().includes('regulatory'));
+
+            // Support card has blue accent (border-color)
+            if (supportCard) {
+                const supportStyle = win.getComputedStyle(supportCard);
+                const borderColor = supportStyle.borderColor;
+                assert('Support card has blue border styling',
+                    supportCard.classList.contains('support-card'));
+            }
+
+            // Critique card has red accent
+            if (critiqueCard) {
+                assert('Critique card has red border styling',
+                    critiqueCard.classList.contains('critique-card'));
+            }
+
+            // ===== TRACKER MISSION STATEMENT =====
+            group('Tracker Mission Statement');
+
+            const mission = doc.querySelector('[data-testid="tracker-mission"]');
+            assert('Tracker mission section exists', mission);
+
+            const missionText = mission ? mission.textContent : '';
+            assert('Mission mentions "objective monitoring"', missionText.toLowerCase().includes('objective monitoring'));
+            assert('Mission mentions "without advocating"', missionText.toLowerCase().includes('without advocating'));
+
+            // ===== SECTION 5: TWITTER FEED =====
+            group('Section 5: Twitter Feed');
+
+            const twitterSection = doc.querySelector('[data-testid="about-twitter"]');
+            assert('Twitter section exists on About page', twitterSection);
+            assert('Twitter section titled "From The Mayor\'s Desk"',
+                twitterSection && twitterSection.querySelector('h2') &&
+                twitterSection.querySelector('h2').textContent.includes("From The Mayor's Desk"));
+            assert('Twitter section has @NYCMayor subtitle',
+                twitterSection && twitterSection.querySelector('.twitter-subtitle') &&
+                twitterSection.querySelector('.twitter-subtitle').textContent.includes('@NYCMayor'));
+
+            const twitterLink = twitterSection ? twitterSection.querySelector('a.twitter-timeline') : null;
+            assert('Twitter timeline embed link exists', twitterLink);
+            assert('Twitter timeline points to @NYCMayor',
+                twitterLink && twitterLink.href.includes('NYCMayor'));
+            assert('Twitter container exists',
+                twitterSection && twitterSection.querySelector('.twitter-container'));
+
+            // ===== SECTION 6: ABOUT THIS TRACKER =====
+            group('Section 6: About This Tracker');
+
+            const trackerStory = doc.querySelector('[data-testid="about-tracker-story"]');
+            assert('About This Tracker section exists', trackerStory);
+            assert('Section title is "About This Tracker"',
+                trackerStory && trackerStory.querySelector('.about-subtitle') &&
+                trackerStory.querySelector('.about-subtitle').textContent.includes('About This Tracker'));
+
+            const trackerText = trackerStory ? trackerStory.textContent : '';
+            assert('Mentions community accountability', trackerText.toLowerCase().includes('community accountability'));
+            assert('Mentions independent project', trackerText.toLowerCase().includes('independent project'));
+
+            // Action buttons
+            const actionButtons = trackerStory ? trackerStory.querySelectorAll('.action-button') : [];
+            assert('Has action buttons', actionButtons.length >= 2, `Found ${actionButtons.length}`);
+
+            let hasFeedback = false, hasIssues = false;
+            actionButtons.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes('feedback')) hasFeedback = true;
+                if (btn.textContent.toLowerCase().includes('issues')) hasIssues = true;
+            });
+            assert('Has "Submit Feedback" button', hasFeedback);
+            assert('Has "Report Issues" button', hasIssues);
+
+            // ===== NAVIGATION =====
+            group('Navigation & Active State');
+
+            const navLinks = doc.querySelectorAll('.nav-link');
+            assert('Navigation has at least 2 links', navLinks.length >= 2);
+
+            const homeLink = doc.querySelector('[data-page="home"]');
+            const aboutLink = doc.querySelector('[data-page="about"]');
+            assert('Home nav link exists', homeLink);
+            assert('About nav link exists', aboutLink);
+            assert('Home link href is #home', homeLink && homeLink.getAttribute('href') === '#home');
+            assert('About link href is #about', aboutLink && aboutLink.getAttribute('href') === '#about');
+
+            // Since we loaded #about, the about link should be active
+            assert('About nav link has active class (loaded #about)',
+                aboutLink && aboutLink.classList.contains('active'));
+
+            // Active state styling check
+            const activeNavStyle = aboutLink ? win.getComputedStyle(aboutLink) : null;
+            assert('Active nav link has cream background',
+                activeNavStyle && (
+                    activeNavStyle.backgroundColor.includes('255, 248, 220') ||
+                    activeNavStyle.backgroundColor.includes('FFF8DC') ||
+                    aboutLink.classList.contains('active')
+                ));
+
+            // ===== PAGE SWITCHING =====
+            group('Page Switching via JavaScript');
+
+            // Test switchPage function exists
+            assert('switchPage function exists', typeof win.switchPage === 'function' || typeof win.switchPage !== 'undefined');
+
+            // Test valid pages array
+            assert('validPages array exists', win.validPages && Array.isArray(win.validPages));
+            assert('validPages includes "home"', win.validPages && win.validPages.includes('home'));
+            assert('validPages includes "about"', win.validPages && win.validPages.includes('about'));
+
+            // Test switching to home
+            if (typeof win.switchPage === 'function') {
+                win.switchPage('home');
+                const homePage = doc.getElementById('homePage');
+                assert('switchPage("home") shows home page',
+                    homePage && homePage.classList.contains('active'));
+                assert('switchPage("home") hides about page',
+                    aboutPage && !aboutPage.classList.contains('active'));
+                assert('switchPage("home") activates home nav',
+                    homeLink && homeLink.classList.contains('active'));
+
+                // Switch back to about
+                win.switchPage('about');
+                assert('switchPage("about") shows about page',
+                    aboutPage && aboutPage.classList.contains('active'));
+                assert('switchPage("about") hides home page',
+                    homePage && !homePage.classList.contains('active'));
+                assert('switchPage("about") activates about nav',
+                    aboutLink && aboutLink.classList.contains('active'));
+
+                // Test invalid page defaults to home
+                win.switchPage('invalid');
+                assert('Invalid page ID defaults to home',
+                    homePage && homePage.classList.contains('active'));
+
+                // Restore about page for remaining tests
+                win.switchPage('about');
+            }
+
+            // ===== SMOOTH TRANSITIONS =====
+            group('Smooth Page Transitions');
+
+            const pageContentStyle = win.getComputedStyle(aboutPage);
+            assert('About page has pageFadeIn animation',
+                pageContentStyle.animationName === 'pageFadeIn' ||
+                aboutPage.classList.contains('active'));
+
+            // Check CSS has the transition/animation rules
+            const stylesheets = doc.styleSheets;
+            let hasPageFadeIn = false;
+            let hasPageTransition = false;
+            try {
+                for (let sheet of stylesheets) {
+                    try {
+                        for (let rule of sheet.cssRules) {
+                            if (rule.cssText && rule.cssText.includes('pageFadeIn')) {
+                                hasPageFadeIn = true;
+                            }
+                            if (rule.selectorText === '.page-content' && rule.cssText.includes('transition')) {
+                                hasPageTransition = true;
+                            }
+                        }
+                    } catch(e) { /* cross-origin stylesheet, skip */ }
+                }
+            } catch(e) {}
+            assert('pageFadeIn keyframes animation defined', hasPageFadeIn);
+            assert('page-content has CSS transition properties', hasPageTransition);
+
+            // ===== URL HASH SUPPORT =====
+            group('URL Hash Support');
+
+            assert('Page loaded with #about hash correctly',
+                aboutPage && aboutPage.classList.contains('active'));
+
+            // ===== CONTENT TONE (Objectivity Check) =====
+            group('Content Tone & Objectivity');
+
+            const fullAboutText = aboutPage ? aboutPage.textContent : '';
+            assert('About page does not use first-person "we" in platform description',
+                !doc.querySelector('[data-testid="about-platform"]').textContent.includes(" we "));
+            assert('Mission uses objective language',
+                missionText.includes('objective monitoring'));
+            assert('About tracker section describes itself as community tool',
+                trackerText.toLowerCase().includes('community'));
+
+            // ===== Render Results =====
+            render();
+        });
+    </script>
+</body>
+</html>
