@@ -122,8 +122,8 @@ We love design contributions that maintain the protest poster aesthetic!
 ## 📞 Questions?
 
 - **Open an Issue** for general questions
-- **Email:** feedback@zohranwatch.org (update with actual contact)
-- **Twitter:** @ZohranWatch (if you create one)
+- **Email:** feedback@zohranwatch.org
+- **Twitter:** @ZohranWatch
 
 ## 🙏 Thank You
 
